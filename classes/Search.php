@@ -288,6 +288,11 @@ class SearchCore
 
         return $string;
     }
+        public static function convertPersianNumbersToEnglish($string) {
+        $persianNumbers = ['۰', '۱', '۲', '۳', '۴', '۵', '۶', '۷', '۸', '۹'];
+        $englishNumbers = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
+        return str_replace($persianNumbers, $englishNumbers, $string);
+    }
 
     /**
      * The holy method to search for products.
@@ -366,7 +371,7 @@ class SearchCore
             $productIdsFoundForCurrentExpression = null;
 
             // Get all words from current expression
-            $words = Search::extractKeyWords($expression, $id_lang, false, $context->language->iso_code);
+            $words = Search::extractKeyWords(self::convertPersianNumbersToEnglish($expr), $id_lang, false, $context->language->iso_code);
             foreach ($words as $key => $word) {
                 // Skip all empty words or shorter than our limit
                 if (empty($word) || strlen($word) < $psSearchMinWordLength) {
